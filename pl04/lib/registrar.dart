@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'database_helper.dart';
-import 'main.dart'; // Importa o main.dart para navegar para a página principal
+import 'main.dart'; 
 
 class RegistrarPage extends StatelessWidget {
   const RegistrarPage({Key? key}) : super(key: key);
@@ -48,46 +48,61 @@ class _RegisterFormState extends State<RegisterForm>
     super.dispose();
   }
 
+  //Função para registrar usuário
   void _register() async {
+  String username = _usernameController.text.trim();
+  String password = _passwordController.text.trim(); 
+
+  if (username.isEmpty || password.isEmpty) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Preencha todos os campos!')),
+    );
+    return; 
+  }
+
+  // Verifica se o nome de usuário já existe (database_helper)
+  bool userExists = await dbHelper.usernameExists(username);
+
+  if (userExists) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Usuário já existe!')),
+    );
+  } else {
+    // Se o usuário não existe e os campos estão preenchidos, registra o novo usuário
     Map<String, dynamic> row = {
-      DatabaseHelper.columnName: _usernameController.text,
-      DatabaseHelper.columnPassword: _passwordController.text,
+      DatabaseHelper.columnName: username,
+      DatabaseHelper.columnPassword: password,
       DatabaseHelper.columnScore: 0, // Inicia o score com 0 ao registrar
     };
+
     await dbHelper.insert(row);
     _usernameController.clear();
     _passwordController.clear();
 
-    // Start the animation
+    // Animação
     _animationController.forward(from: 0.0);
 
-    // Show a SnackBar with confirmation
+    // Mostra um SnackBar de sucesso
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Usuário registrado com sucesso!')),
     );
 
-    // Navigate back to the main screen after a delay to allow SnackBar to be visible
+    // Navega de volta para a página inicial após um pequeno atraso para que o SnackBar seja visível
     await Future.delayed(const Duration(seconds: 2));
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => const MyHomePage()), // Navega para a página principal
+      MaterialPageRoute(builder: (context) => const MyHomePage()),
     );
   }
+}
+
 
   void _voltar() async {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => const MyHomePage()), // Navega para a página principal
-    );
-  }
-
-  Widget _buildListView() {
-    return ListView(
-      children: const [
-        ListTile(
-          title: Text('Usuário registrado com sucesso!'),
-        )
-      ],
+      MaterialPageRoute(
+          builder: (context) =>
+              const MyHomePage()), 
     );
   }
 
@@ -95,7 +110,7 @@ class _RegisterFormState extends State<RegisterForm>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Registrar"),
+        title: const Text("Registrar Usuário"),
       ),
       body: Center(
         child: Column(
@@ -108,7 +123,7 @@ class _RegisterFormState extends State<RegisterForm>
               child: TextField(
                 controller: _usernameController,
                 decoration: const InputDecoration(
-                  hintText: 'Username',
+                  hintText: 'Nome de usuário',
                 ),
               ),
             ),
@@ -117,7 +132,7 @@ class _RegisterFormState extends State<RegisterForm>
               child: TextField(
                 controller: _passwordController,
                 decoration: const InputDecoration(
-                  hintText: 'Password',
+                  hintText: 'Palavra-Passe',
                 ),
               ),
             ),
@@ -138,7 +153,6 @@ class _RegisterFormState extends State<RegisterForm>
             Expanded(
               child: FadeTransition(
                 opacity: _animation,
-                child: _buildListView(),
               ),
             ),
           ],

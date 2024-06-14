@@ -1,6 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'usersession.dart';
 
 class GamePage extends StatefulWidget {
   const GamePage({Key? key}) : super(key: key);
@@ -25,25 +25,25 @@ class _GamePageState extends State<GamePage> {
   void initState() {
     super.initState();
     _shuffleQuestions();
-    _loadHighScore();
+    // _loadHighScore();
   }
 
   void _shuffleQuestions() {
     final random = Random();
-    _questions.shuffle(random);
+    // _questions.shuffle(random);
   }
 
-  void _loadHighScore() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _highScore = prefs.getInt('highScore') ?? 0;
-    });
-  }
+  // void _loadHighScore() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   setState(() {
+  //     _highScore = prefs.getInt('highScore') ?? 0;
+  //   });
+  // }
 
-  void _saveHighScore() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('highScore', _highScore);
-  }
+  // void _saveHighScore() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   await prefs.setInt('highScore', _highScore);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +100,7 @@ class _GamePageState extends State<GamePage> {
 
     if (_score > _highScore) {
       _highScore = _score;
-      _saveHighScore();
+      // _saveHighScore();
     }
 
     setState(() {

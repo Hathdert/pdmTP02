@@ -3,113 +3,99 @@ import 'package:pl04/main.dart';
 import 'database_helper.dart';
 import 'leaderboard.dart';
 import 'usersession.dart';
+import 'jogo.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await DatabaseHelper.instance.database;
-  runApp(const MyApp());
-}
+class MenuPage extends StatefulWidget {
+  const MenuPage({Key? key}) : super(key: key);
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
   @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: MenuPage(),
-    );
-  }
+  _MenuPageState createState() => _MenuPageState();
 }
 
-class MenuPage extends StatelessWidget {
-  const MenuPage({super.key});
+class _MenuPageState extends State<MenuPage> {
+  late Future<String> _username;
+  late Future<int> _score;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    // Carrega o nome do usuário do UserSession
+    _username = Future<String>(() async {
+      return UserSession().username ?? '';
+    });
+
+    // Carrega o score do usuário usando o ID do UserSession
+    _score = Future<int>(() async {
+      int? userId = UserSession().id;
+      if (userId != null) {
+        return await DatabaseHelper.instance.getUserScoreById(userId) ?? 0;
+      } else {
+        return 0; // Define um valor padrão se o ID do usuário não estiver definido
+      }
+    });
+
+    // Atualiza a UI após carregar os dados
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Menu'),
-      ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            ElevatedButton(
-              onPressed: () {
-                // Navigate to the game page
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const GamePage()),
-                );
-              },
-              child: const Text('Começar novo jogo'),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                // Navigate to the leaderboard page
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => LeaderboardPage()),
-                );
-              },
-              child: const Text('Leaderboard'),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                // Perform logout action
-                UserSession().clear();
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => const MyHomePage()),
-                );
-              },
-              child: const Text('Logout'),
-            ),
-          ],
+        child: FutureBuilder(
+          future: Future.wait([_username, _score]),
+          builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator(); // Mostra um indicador de carregamento enquanto os dados são carregados
+            } else if (snapshot.hasError) {
+              return Text('Erro ao carregar os dados'); // Trata erros, se houver
+            } else {
+              String username = snapshot.data?[0] ?? '';
+              int score = snapshot.data?[1] ?? 0;
+
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    'Bem-vindo, $username!',
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    'Pontos: $score',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  SizedBox(height: 30),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => const GamePage()),
+                      );
+                    },
+                    child: const Text('Começar novo jogo'),
+                  ),
+                  const SizedBox(height: 20),
+                  
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      UserSession().clear();
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (context) => const MyHomePage()),
+                      );
+                    },
+                    child: const Text('Sair'),
+                  ),
+                ],
+              );
+            }
+          },
         ),
       ),
     );
   }
-}
-
-class GamePage extends StatelessWidget {
-  const GamePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Game'),
-      ),
-      body: Center(
-        child: const Text('Game Page'),
-      ),
-    );
-  }
-}
-
-void showAlertDialog(BuildContext context, String message) {
-  // set up the button
-  Widget okButton = TextButton(
-    child: const Text("OK"),
-    onPressed: () {
-      Navigator.of(context).pop();
-    },
-  );
-
-  // set up the AlertDialog
-  AlertDialog alert = AlertDialog(
-    title: const Text("Alert"),
-    content: Text(message),
-    actions: [
-      okButton,
-    ],
-  );
-
-  // show the dialog
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return alert;
-    },
-  );
 }

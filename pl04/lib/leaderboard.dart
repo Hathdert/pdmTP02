@@ -19,7 +19,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
   }
 
   void _fetchLeaderboardData() async {
-    final data = await dbHelper.queryLeaderboard();
+    final data = await dbHelper.queryTop5Leaderboard();
     setState(() {
       _leaderboardData = data;
     });
@@ -66,7 +66,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Leaderboard'),
+        title: const Text('Top 5 - Classificados'),
       ),
       body: _leaderboardData.isEmpty
           ? const Center(child: CircularProgressIndicator())
