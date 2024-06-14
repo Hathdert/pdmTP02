@@ -103,7 +103,7 @@ Future<List<Map<String, dynamic>>> queryTop5Leaderboard() async {
   // Adiciona pontos ao usuário com base no ID da sessão
   Future<void> addScore(int userId, int pointsToAdd) async {
 
-    if (userId != null) {
+    
       Database db = await instance.database;
       int currentScore = await getUserScoreById(userId) ?? 0;
       int newScore = currentScore + pointsToAdd;
@@ -114,13 +114,13 @@ Future<List<Map<String, dynamic>>> queryTop5Leaderboard() async {
         where: "$columnId = ?",
         whereArgs: [userId],
       );
-    }
+    
   }
 
   // Subtrai pontos do usuário com base no ID da sessão
   Future<void> subtractScore(int userId, int pointsToSubtract) async {
   
-    if (userId != null) {
+    
       Database db = await instance.database;
       int currentScore = await getUserScoreById(userId) ?? 0;
       int newScore = currentScore - pointsToSubtract;
@@ -136,6 +136,6 @@ Future<List<Map<String, dynamic>>> queryTop5Leaderboard() async {
         where: "$columnId = ?",
         whereArgs: [userId],
       );
-    }
+    
   }
 }

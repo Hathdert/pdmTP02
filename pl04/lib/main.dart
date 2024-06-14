@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'database_helper.dart';
-import 'registrar.dart';
+import 'register.dart';
 import 'usersession.dart';
 import 'menu.dart';
 import 'leaderboard.dart';

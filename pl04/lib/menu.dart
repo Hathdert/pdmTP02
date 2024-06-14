@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pl04/main.dart';
 import 'database_helper.dart';
-import 'leaderboard.dart';
 import 'usersession.dart';
-import 'jogo.dart';
+import 'game.dart';
 
 class MenuPage extends StatefulWidget {
   const MenuPage({Key? key}) : super(key: key);
@@ -71,10 +70,15 @@ class _MenuPageState extends State<MenuPage> {
                   ),
                   SizedBox(height: 30),
                   ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => const GamePage()),
+                    onPressed: () async {
+                      // Navega para a página do jogo e espera até que a página do jogo seja concluída
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => GamePage()),
                       );
+
+                      // Após retornar da página do jogo, recarrega os dados do usuário
+                      _loadUserData();
                     },
                     child: const Text('Começar novo jogo'),
                   ),
