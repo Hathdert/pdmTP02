@@ -21,6 +21,9 @@ class _GamePageState extends State<GamePage> {
   void _startGame(int nivel) {
     
     Map<String, String> questao = Questoes.receberQuestao(nivel);
+
+    //Caso queira ativar as questões aleatórias:
+
     //Map<String, dynamic> questao = Questoes.receberQuestao(nivel);
 
     showDialog(
