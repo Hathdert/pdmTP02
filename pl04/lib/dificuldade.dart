@@ -8,16 +8,16 @@ class DifficultySelectionPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Select Difficulty'),
+        title: const Text('Selecione dificuldade'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            _buildDifficultyButton(context, 'Easy'),
-            _buildDifficultyButton(context, 'Medium'),
-            _buildDifficultyButton(context, 'Hard'),
-            _buildDifficultyButton(context, 'Endless'),
+            _buildDifficultyButton(context, 'Facil'),
+            _buildDifficultyButton(context, 'Medio'),
+            _buildDifficultyButton(context, 'Dificil'),
+            _buildDifficultyButton(context, 'Infinito'),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
