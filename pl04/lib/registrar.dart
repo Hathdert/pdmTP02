@@ -3,7 +3,8 @@ import 'database_helper.dart';
 import 'main.dart'; // Importa o main.dart para navegar para a página principal
 
 class RegistrarPage extends StatelessWidget {
-  const RegistrarPage({super.key});
+  const RegistrarPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
@@ -13,12 +14,14 @@ class RegistrarPage extends StatelessWidget {
 }
 
 class RegisterForm extends StatefulWidget {
-  const RegisterForm({super.key});
+  const RegisterForm({Key? key}) : super(key: key);
+
   @override
   State<RegisterForm> createState() => _RegisterFormState();
 }
 
-class _RegisterFormState extends State<RegisterForm> with SingleTickerProviderStateMixin {
+class _RegisterFormState extends State<RegisterForm>
+    with SingleTickerProviderStateMixin {
   final dbHelper = DatabaseHelper.instance;
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -49,6 +52,7 @@ class _RegisterFormState extends State<RegisterForm> with SingleTickerProviderSt
     Map<String, dynamic> row = {
       DatabaseHelper.columnName: _usernameController.text,
       DatabaseHelper.columnPassword: _passwordController.text,
+      DatabaseHelper.columnScore: 0, // Inicia o score com 0 ao registrar
     };
     await dbHelper.insert(row);
     _usernameController.clear();
@@ -71,8 +75,6 @@ class _RegisterFormState extends State<RegisterForm> with SingleTickerProviderSt
   }
 
   void _voltar() async {
-
-
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => const MyHomePage()), // Navega para a página principal

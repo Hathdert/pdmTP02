@@ -25,17 +25,42 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
     });
   }
 
-  Widget _buildLeaderboard() {
-    return ListView.builder(
-      itemCount: _leaderboardData.length,
-      itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(_leaderboardData[index][DatabaseHelper.columnName]),
-          trailing: Text(_leaderboardData[index][DatabaseHelper.columnScore].toString()),
-        );
-      },
-    );
-  }
+ Widget _buildLeaderboard() {
+  return ListView.builder(
+    itemCount: _leaderboardData.length,
+    itemBuilder: (context, index) {
+      return ListTile(
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'NOME',
+              style: TextStyle(color: Colors.grey),
+            ),
+            Text(
+              _leaderboardData[index][DatabaseHelper.columnName],
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+        trailing: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Text(
+              'PONTOS',
+              style: TextStyle(color: Colors.grey),
+            ),
+            Text(
+              _leaderboardData[index][DatabaseHelper.columnScore].toString(),
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+      );
+    },
+  );
+}
+
 
   @override
   Widget build(BuildContext context) {
