@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'database_helper.dart';
 
 class LeaderboardPage extends StatefulWidget {
-  const LeaderboardPage({super.key});
+  const LeaderboardPage({Key? key}) : super(key: key);
 
   @override
   _LeaderboardPageState createState() => _LeaderboardPageState();
@@ -21,7 +21,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
   void _fetchLeaderboardData() async {
     final data = await dbHelper.queryLeaderboard();
     setState(() {
-      ;
+      _leaderboardData = data;
     });
   }
 
@@ -30,8 +30,8 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
       itemCount: _leaderboardData.length,
       itemBuilder: (context, index) {
         return ListTile(
-          title: Text(_leaderboardData[index]['username']),
-          trailing: Text(_leaderboardData[index]['score'].toString()),
+          title: Text(_leaderboardData[index][DatabaseHelper.columnName]),
+          trailing: Text(_leaderboardData[index][DatabaseHelper.columnScore].toString()),
         );
       },
     );

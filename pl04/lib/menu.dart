@@ -46,9 +46,9 @@ class MenuPage extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 // Navigate to the leaderboard page
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                      builder: (context) => const LeaderboardPage()),
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LeaderboardPage()),
                 );
               },
               child: const Text('Leaderboard'),
