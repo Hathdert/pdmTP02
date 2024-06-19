@@ -9,17 +9,21 @@ class LeaderboardPage extends StatefulWidget {
 }
 
 class _LeaderboardPageState extends State<LeaderboardPage> {
+
+  //Cria uma nova instância da classe de base de dados - Final = não pode ser alterado - é atribuido o valor apenas uma vez. 
   final dbHelper = DatabaseHelper.instance;
+
+  // Variável para o valor do leaderboard
   List<Map<String, dynamic>> _leaderboardData = [];
 
   @override
   void initState() {
     super.initState();
-    _fetchLeaderboardData();
+    _fetchLeaderboardData(); //ao iniciar a pagina, chama a função para preencher o leaderboard
   }
 
   void _fetchLeaderboardData() async {
-    final data = await dbHelper.queryTop5Leaderboard();
+    final data = await dbHelper.queryTop5Leaderboard(); //utiliza a função queryTop5Leaderboard
     setState(() {
       _leaderboardData = data;
     });

@@ -9,7 +9,7 @@ class DatabaseHelper {
   static final columnName = 'nome';
   static final columnPassword = 'password';
   static final columnScore = 'score';
-  
+
   // Classe que usa padrão singleton
   DatabaseHelper._privateConstructor();
 
@@ -43,26 +43,27 @@ class DatabaseHelper {
     return await db.insert(table, row);
   }
 
-   //verifica se usuario existe ou não - retorna bool
+  //verifica se usuario existe ou não - retorna bool
   Future<bool> userExists(String nome, String senha) async {
     Database db = await instance.database;
-    var res = await db.query(table, where: "$columnName = ? AND $columnPassword = ?", whereArgs: [nome, senha]);
+    var res = await db.query(table,
+        where: "$columnName = ? AND $columnPassword = ?",
+        whereArgs: [nome, senha]);
     return res.isNotEmpty;
   }
 
   // Retorna os 5 usuários com os maiores pontos
-Future<List<Map<String, dynamic>>> queryTop5Leaderboard() async {
-  Database db = await instance.database;
-  var res = await db.query(
-    table,
-    orderBy: "$columnScore DESC",
-    limit: 5, // Limita a consulta aos primeiros 5 registros
-  );
-  return res;
-}
+  Future<List<Map<String, dynamic>>> queryTop5Leaderboard() async {
+    Database db = await instance.database;
+    var res = await db.query(
+      table,
+      orderBy: "$columnScore DESC",
+      limit: 5, // Limita a consulta aos primeiros 5 registros
+    );
+    return res;
+  }
 
-
-  // Retorna o ID do usuário 
+  // Retorna o ID do usuário
   Future<int?> getUserId(String nome, String senha) async {
     Database db = await instance.database;
     var res = await db.query(table,
@@ -80,9 +81,7 @@ Future<List<Map<String, dynamic>>> queryTop5Leaderboard() async {
   Future<bool> usernameExists(String nome) async {
     Database db = await instance.database;
     var res = await db.query(table,
-        columns: [columnName],
-        where: "$columnName = ?",
-        whereArgs: [nome]);
+        columns: [columnName], where: "$columnName = ?", whereArgs: [nome]);
     return res.isNotEmpty;
   }
 
@@ -90,9 +89,7 @@ Future<List<Map<String, dynamic>>> queryTop5Leaderboard() async {
   Future<int?> getUserScoreById(int id) async {
     Database db = await instance.database;
     var res = await db.query(table,
-        columns: [columnScore],
-        where: "$columnId = ?",
-        whereArgs: [id]);
+        columns: [columnScore], where: "$columnId = ?", whereArgs: [id]);
     if (res.isNotEmpty) {
       return res.first[columnScore] as int?;
     } else {
@@ -102,40 +99,34 @@ Future<List<Map<String, dynamic>>> queryTop5Leaderboard() async {
 
   // Adiciona pontos ao usuário com base no ID da sessão
   Future<void> addScore(int userId, int pointsToAdd) async {
+    Database db = await instance.database;
+    int currentScore = await getUserScoreById(userId) ?? 0;
+    int newScore = currentScore + pointsToAdd;
 
-    
-      Database db = await instance.database;
-      int currentScore = await getUserScoreById(userId) ?? 0;
-      int newScore = currentScore + pointsToAdd;
-
-      await db.update(
-        table,
-        {columnScore: newScore},
-        where: "$columnId = ?",
-        whereArgs: [userId],
-      );
-    
+    await db.update(
+      table,
+      {columnScore: newScore},
+      where: "$columnId = ?",
+      whereArgs: [userId],
+    );
   }
 
   // Subtrai pontos do usuário com base no ID da sessão
   Future<void> subtractScore(int userId, int pointsToSubtract) async {
-  
-    
-      Database db = await instance.database;
-      int currentScore = await getUserScoreById(userId) ?? 0;
-      int newScore = currentScore - pointsToSubtract;
+    Database db = await instance.database;
+    int currentScore = await getUserScoreById(userId) ?? 0;
+    int newScore = currentScore - pointsToSubtract;
 
-      // Garante que o score nunca seja menor que zero
-      if (newScore < 0) {
-        newScore = 0;
-      }
+    // Garante que o score nunca seja menor que zero
+    if (newScore < 0) {
+      newScore = 0;
+    }
 
-      await db.update(
-        table,
-        {columnScore: newScore},
-        where: "$columnId = ?",
-        whereArgs: [userId],
-      );
-    
+    await db.update(
+      table,
+      {columnScore: newScore},
+      where: "$columnId = ?",
+      whereArgs: [userId],
+    );
   }
 }

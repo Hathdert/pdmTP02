@@ -2,6 +2,8 @@
 import 'dart:math';
 
 class Questoes {
+
+  //Estruturas de listas com perguntas e respectivo nivel
   static List<Map<String, String>> nivel1 = [
     {
       'pergunta': 'Qual é o Network ID do endereço IP 192.168.1.10 com máscara de sub-rede /24?',
@@ -47,6 +49,8 @@ class Questoes {
     },
   ];
 
+
+  //Função responsável por retornar determinada questao, aleatoriamente, de acordo com o nível.
   static Map<String, String> receberQuestao(int nivel) {
     List<Map<String, String>> questions;
     switch (nivel) {
