@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'database_helper.dart';
 import 'questions.dart';
 import 'usersession.dart';
-import 'randomquestions.dart';
 
 class GamePage extends StatefulWidget {
-  const GamePage({Key? key}) : super(key: key);
+  const GamePage({super.key});
 
   @override
   _GamePageState createState() => _GamePageState();
@@ -68,8 +67,12 @@ class _GamePageState extends State<GamePage> {
 
   //Função que verifica se as respostas estão corretas ou não
   void _checkAnswer(String respostaCorreta, int nivel) async {
-    bool acertou = _userAnswer != null && _userAnswer!.toLowerCase() == respostaCorreta.toLowerCase(); // comparar respostas, usando o tolower para não ser case sensitive
-    int pontos = _getScoreForLevel(nivel,acertou); //chama a função que devolve a quantide de pontos ganhos ou perdidos na questão
+    bool acertou = _userAnswer != null &&
+        _userAnswer!.toLowerCase() ==
+            respostaCorreta
+                .toLowerCase(); // comparar respostas, usando o tolower para não ser case sensitive
+    int pontos = _getScoreForLevel(nivel,
+        acertou); //chama a função que devolve a quantide de pontos ganhos ou perdidos na questão
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -98,17 +101,21 @@ class _GamePageState extends State<GamePage> {
 
 // Função assíncrona que atualiza a pontuação do usuário
   Future<void> _updateScore(int userId, int pontos) async {
-    int currentScore = await DatabaseHelper.instance.getUserScoreById(userId) ?? 0; // Recupera a pontuação atual do usuário
-    int newScore = currentScore + pontos; // Calcula a nova pontuação somando os pontos ganhos ou perdidos
+    int currentScore = await DatabaseHelper.instance.getUserScoreById(userId) ??
+        0; // Recupera a pontuação atual do usuário
+    int newScore = currentScore +
+        pontos; // Calcula a nova pontuação somando os pontos ganhos ou perdidos
 
     if (newScore < 0) {
       newScore = 0; // Garante que a pontuação não seja negativa
     }
 
     if (pontos > 0) {
-      await DatabaseHelper.instance.addScore(userId, pontos); // Adiciona pontos à pontuação do usuário - Função addScore
+      await DatabaseHelper.instance.addScore(userId,
+          pontos); // Adiciona pontos à pontuação do usuário - Função addScore
     } else {
-      await DatabaseHelper.instance.subtractScore(userId, -pontos); // Subtrai pontos da pontuação do usuário - Função subtractScore
+      await DatabaseHelper.instance.subtractScore(userId,
+          -pontos); // Subtrai pontos da pontuação do usuário - Função subtractScore
     }
 
     setState(() {
