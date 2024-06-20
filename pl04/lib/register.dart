@@ -3,7 +3,7 @@ import 'database_helper.dart';
 import 'main.dart';
 
 class RegistrarPage extends StatelessWidget {
-  const RegistrarPage({Key? key}) : super(key: key);
+  const RegistrarPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class RegistrarPage extends StatelessWidget {
 }
 
 class RegisterForm extends StatefulWidget {
-  const RegisterForm({Key? key}) : super(key: key);
+  const RegisterForm({super.key});
   @override
   State<RegisterForm> createState() => _RegisterFormState();
 }
@@ -76,8 +76,8 @@ class _RegisterFormState extends State<RegisterForm> {
   //Função de voltar - Utilizada pelo botão de voltar
   void _voltar() async {
     Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const MyHomePage()),
-      );
+      MaterialPageRoute(builder: (context) => const MyHomePage()),
+    );
   }
 
   @override

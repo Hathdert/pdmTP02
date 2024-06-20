@@ -2,13 +2,13 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 class DatabaseHelper {
-  static final _databaseName = "tp02sqlite.db";
-  static final _databaseVersion = 1;
-  static final table = 'Utilizadores';
-  static final columnId = 'id';
-  static final columnName = 'nome';
-  static final columnPassword = 'password';
-  static final columnScore = 'score';
+  static const _databaseName = "tp02sqlite.db";
+  static const _databaseVersion = 1;
+  static const table = 'Utilizadores';
+  static const columnId = 'id';
+  static const columnName = 'nome';
+  static const columnPassword = 'password';
+  static const columnScore = 'score';
 
   // Classe que usa padrão singleton
   DatabaseHelper._privateConstructor();

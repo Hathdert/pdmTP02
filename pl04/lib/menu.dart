@@ -5,14 +5,13 @@ import 'usersession.dart';
 import 'game.dart';
 
 class MenuPage extends StatefulWidget {
-  const MenuPage({Key? key}) : super(key: key);
+  const MenuPage({super.key});
 
   @override
   _MenuPageState createState() => _MenuPageState();
 }
 
 class _MenuPageState extends State<MenuPage> {
-  
   late Future<String> _username; // Variável para guardar o username da sessão
   late Future<int> _score; // Variável para guardar o score
 
@@ -25,14 +24,16 @@ class _MenuPageState extends State<MenuPage> {
   Future<void> _loadUserData() async {
     // Carrega o nome do usuário do UserSession
     _username = Future<String>(() async {
-      return UserSession().username ?? ''; // Retorna de forma assíncrona o valor do username
+      return UserSession().username ??
+          ''; // Retorna de forma assíncrona o valor do username
     });
 
     // Carrega o score do usuário usando o ID recuperado do UserSession
     _score = Future<int>(() async {
       int? userId = UserSession().id;
       if (userId != null) {
-        return await DatabaseHelper.instance.getUserScoreById(userId) ?? 0; // Recupera o score do usuário
+        return await DatabaseHelper.instance.getUserScoreById(userId) ??
+            0; // Recupera o score do usuário
       } else {
         return 0; // Retorna 0 se o ID do usuário for nulo
       }
@@ -50,7 +51,8 @@ class _MenuPageState extends State<MenuPage> {
           future: Future.wait([_username, _score]),
           builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
             if (!snapshot.hasData) {
-              return SizedBox.shrink(); // Retorna um widget vazio se não houver dados
+              return SizedBox
+                  .shrink(); // Retorna um widget vazio se não houver dados
             }
 
             String username = snapshot.data?[0] ?? '';
@@ -88,7 +90,8 @@ class _MenuPageState extends State<MenuPage> {
                     // Limpa a sessão do usuário e volta para a página inicial
                     UserSession().clear();
                     Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => const MyHomePage()),
+                      MaterialPageRoute(
+                          builder: (context) => const MyHomePage()),
                     );
                   },
                   child: const Text('Sair'),

@@ -95,7 +95,10 @@ class QuestoesRand {
     String ip2 = randomIP();
     String ip = randomIP();
 
-    String pergunta = questions[index]['pergunta'].replaceAll('{IP}', ip).replaceAll('{IP1}', ip1).replaceAll('{IP2}', ip2);
+    String pergunta = questions[index]['pergunta']
+        .replaceAll('{IP}', ip)
+        .replaceAll('{IP1}', ip1)
+        .replaceAll('{IP2}', ip2);
     dynamic resposta = questions[index]['resposta'];
 
     if (resposta is Function) {
