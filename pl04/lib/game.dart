@@ -22,11 +22,12 @@ class _GamePageState extends State<GamePage> {
   //Função para dar inicio a um novo jogo , recebe o nivel de dificuldade do jogo que irá iniciar
   void _startGame(int nivel) {
     //é chamada a função receberQuestao, enviando o nivel e ela retorna duas strings, uma com a pergunta e outra com a resposta.
-    Map<String, String> questao = Questoes.receberQuestao(nivel);
+    
+    //Map<String, String> questao = Questoes.receberQuestao(nivel);
 
     //Para ativar as questões aleatórias, descomentar o codigo e comentar o anterior:
 
-    //Map<String, dynamic> questao = Questoes.receberQuestao(nivel);
+    Map<String, dynamic> questao = QuestoesRand.receberQuestaoRand(nivel);
 
     //Mostra um alertDialog com a pergunta e campo para responder
     showDialog(
