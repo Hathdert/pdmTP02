@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'database_helper.dart';
 import 'questions.dart';
 import 'usersession.dart';
+import 'randomquestions.dart';
 
 class GamePage extends StatefulWidget {
   const GamePage({super.key});
@@ -20,12 +21,13 @@ class _GamePageState extends State<GamePage> {
 
   //Função para dar inicio a um novo jogo , recebe o nivel de dificuldade do jogo que irá iniciar
   void _startGame(int nivel) {
+    
     //é chamada a função receberQuestao, enviando o nivel e ela retorna duas strings, uma com a pergunta e outra com a resposta.
     
+    //Para ativar as questões fixas, descomentar:
     //Map<String, String> questao = Questoes.receberQuestao(nivel);
 
-    //Para ativar as questões aleatórias, descomentar o codigo e comentar o anterior:
-
+    //Para ativar as questões aleatórias, descomentar:
     Map<String, dynamic> questao = QuestoesRand.receberQuestaoRand(nivel);
 
     //Mostra um alertDialog com a pergunta e campo para responder
